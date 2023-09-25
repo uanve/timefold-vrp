@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<solver xmlns="https://timefold.ai/xsd/solver" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://timefold.ai/xsd/solver https://timefold.ai/xsd/solver/solver.xsd">
+    <!-- To slowly prove there are no bugs in this code -->
+    <!--<environmentMode>FULL_ASSERT</environmentMode>-->
+    <!-- To solve faster by saturating multiple CPU cores -->
+    <!--<moveThreadCount>AUTO</moveThreadCount>-->
+
+    <solutionClass>org.acme.vehiclerouting.domain.VehicleRoutePlan</solutionClass>
+    <entityClass>org.acme.vehiclerouting.domain.Vehicle</entityClass>
+    <entityClass>org.acme.vehiclerouting.domain.Customer</entityClass>
+<!--    <entityClass>org.acme.vehiclerouting.domain.timewindowed.TimeWindowedCustomer</entityClass>-->
+
+    <scoreDirectorFactory>
+        <!--<easyScoreCalculatorClass>org.acme.vehiclerouting.vehiclerouting.optional.score.VehicleRoutingEasyScoreCalculator</easyScoreCalculatorClass>-->
+        <constraintProviderClass>org.acme.vehiclerouting.solver.VehicleRoutingConstraintProvider</constraintProviderClass>
+        <!--<incrementalScoreCalculatorClass>org.acme.vehiclerouting.optional.score.VehicleRoutingIncrementalScoreCalculator</incrementalScoreCalculatorClass>-->
+        <initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>
+    </scoreDirectorFactory>
+
+    <termination>
+<!--        <minutesSpentLimit>5</minutesSpentLimit>-->
+        <secondsSpentLimit>10</secondsSpentLimit>
+    </termination>
+    <constructionHeuristic>
+    </constructionHeuristic>
+    <localSearch>
+        <unionMoveSelector>
+            <listChangeMoveSelector />
+            <listSwapMoveSelector />
+            <subListChangeMoveSelector>
+                <selectReversingMoveToo>true</selectReversingMoveToo>
+            </subListChangeMoveSelector>
+            <subListSwapMoveSelector>
+                <selectReversingMoveToo>true</selectReversingMoveToo>
+            </subListSwapMoveSelector>
+            <kOptListMoveSelector/>
+
+            <!-- With Timefold Solver Enterprise Edition, uncomment the following to enable Nearby Selection: -->
+            <!--      <listChangeMoveSelector>-->
+            <!--        <valueSelector id="1"/>-->
+            <!--        <destinationSelector>-->
+            <!--          <nearbySelection>-->
+            <!--            <originValueSelector mimicSelectorRef="1"/>-->
+            <!--            <nearbyDistanceMeterClass>org.acme.vehiclerouting.vehiclerouting.domain.solver.nearby.CustomerNearbyDistanceMeter</nearbyDistanceMeterClass>-->
+            <!--            <nearbySelectionDistributionType>PARABOLIC_DISTRIBUTION</nearbySelectionDistributionType>-->
+            <!--            <parabolicDistributionSizeMaximum>40</parabolicDistributionSizeMaximum>-->
+            <!--          </nearbySelection>-->
+            <!--        </destinationSelector>-->
+            <!--      </listChangeMoveSelector>-->
+            <!--      <listSwapMoveSelector>-->
+            <!--        <valueSelector id="2"/>-->
+            <!--        <secondaryValueSelector>-->
+            <!--          <nearbySelection>-->
+            <!--            <originValueSelector mimicSelectorRef="2"/>-->
+            <!--            <nearbyDistanceMeterClass>org.acme.vehiclerouting.vehiclerouting.domain.solver.nearby.CustomerNearbyDistanceMeter</nearbyDistanceMeterClass>-->
+            <!--            <nearbySelectionDistributionType>PARABOLIC_DISTRIBUTION</nearbySelectionDistributionType>-->
+            <!--            <parabolicDistributionSizeMaximum>40</parabolicDistributionSizeMaximum>-->
+            <!--          </nearbySelection>-->
+            <!--        </secondaryValueSelector>-->
+            <!--      </listSwapMoveSelector>-->
+            <!--      <subListChangeMoveSelector>-->
+            <!--        <selectReversingMoveToo>true</selectReversingMoveToo>-->
+            <!--        <subListSelector id="3"/>-->
+            <!--        <destinationSelector>-->
+            <!--          <nearbySelection>-->
+            <!--            <originSubListSelector mimicSelectorRef="3"/>-->
+            <!--            <nearbyDistanceMeterClass>org.acme.vehiclerouting.vehiclerouting.domain.solver.nearby.CustomerNearbyDistanceMeter</nearbyDistanceMeterClass>-->
+            <!--            <nearbySelectionDistributionType>PARABOLIC_DISTRIBUTION</nearbySelectionDistributionType>-->
+            <!--            <parabolicDistributionSizeMaximum>40</parabolicDistributionSizeMaximum>-->
+            <!--          </nearbySelection>-->
+            <!--        </destinationSelector>-->
+            <!--      </subListChangeMoveSelector>-->
+            <!--      <subListSwapMoveSelector>-->
+            <!--        <selectReversingMoveToo>true</selectReversingMoveToo>-->
+            <!--        <subListSelector id="4"/>-->
+            <!--        <secondarySubListSelector>-->
+            <!--          <nearbySelection>-->
+            <!--            <originSubListSelector mimicSelectorRef="4"/>-->
+            <!--            <nearbyDistanceMeterClass>org.acme.vehiclerouting.vehiclerouting.domain.solver.nearby.CustomerNearbyDistanceMeter</nearbyDistanceMeterClass>-->
+            <!--            <nearbySelectionDistributionType>PARABOLIC_DISTRIBUTION</nearbySelectionDistributionType>-->
+            <!--            <parabolicDistributionSizeMaximum>40</parabolicDistributionSizeMaximum>-->
+            <!--          </nearbySelection>-->
+            <!--        </secondarySubListSelector>-->
+            <!--      </subListSwapMoveSelector>-->
+            <!--      <kOptListMoveSelector>-->
+            <!--        <originSelector id="5"/>-->
+            <!--        <valueSelector>-->
+            <!--          <nearbySelection>-->
+            <!--            <originValueSelector mimicSelectorRef="5"/>-->
+            <!--            <nearbyDistanceMeterClass>org.acme.vehiclerouting.vehiclerouting.domain.solver.nearby.CustomerNearbyDistanceMeter</nearbyDistanceMeterClass>-->
+            <!--            <nearbySelectionDistributionType>PARABOLIC_DISTRIBUTION</nearbySelectionDistributionType>-->
+            <!--            <parabolicDistributionSizeMaximum>40</parabolicDistributionSizeMaximum>-->
+            <!--          </nearbySelection>-->
+            <!--        </valueSelector>-->
+            <!--      </kOptListMoveSelector>-->
+        </unionMoveSelector>
+        <acceptor>
+            <lateAcceptanceSize>200</lateAcceptanceSize>
+        </acceptor>
+        <forager>
+            <acceptedCountLimit>1</acceptedCountLimit>
+        </forager>
+    </localSearch>
+</solver>
